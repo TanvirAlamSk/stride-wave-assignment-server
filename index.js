@@ -1,6 +1,7 @@
 const express = require("express")
 const cors = require("cors")
 const jwt = require("jsonwebtoken")
+require('dotenv').config()
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express()
 const port = 5000
@@ -10,8 +11,8 @@ app.use(express.json())
 
 
 
-
-const uri = "mongodb+srv://tanvir_alam:WZ7IuzBQUBmdPF3C@cluster0.7xhaxuz.mongodb.net/?retryWrites=true&w=majority";
+console.log(process.env.DB_NAME)
+const uri = `mongodb+srv://${process.env.DB_NAME}:${process.env.DB_PASSWORD}@cluster0.7xhaxuz.mongodb.net/?retryWrites=true&w=majority`;
 
 const client = new MongoClient(uri, {
     serverApi: {
@@ -23,7 +24,7 @@ const client = new MongoClient(uri, {
 
 
 const createToken = (email) => {
-    const token = jwt.sign({ email }, "1Lc0mBOJrGMKctByggTC74CEe", { expiresIn: "2 days" })
+    const token = jwt.sign({ email }, process.env.SECRET_KEY, { expiresIn: "2 days" })
     return token;
 }
 
@@ -33,7 +34,7 @@ const verifyToken = (req, res, next) => {
         return res.status(401).send("Unauthorized Access")
     }
     const authorization = req.headers.authorization.split(" ")[1]
-    jwt.verify(authorization, "1Lc0mBOJrGMKctByggTC74CEe", function (error, decoded) {
+    jwt.verify(authorization, process.env.SECRET_KEY, function (error, decoded) {
         if (error) {
             return res.status(403).send("Forbidden Access")
         }
