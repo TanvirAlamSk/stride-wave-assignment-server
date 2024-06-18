@@ -29,7 +29,6 @@ const createToken = (email) => {
 }
 
 const verifyToken = (req, res, next) => {
-
     if (!req.headers.authorization) {
         return res.status(401).send("Unauthorized Access")
     }
@@ -121,7 +120,6 @@ async function run() {
             }
             const options = { upsert: true }
             const result = await users.updateOne(filter, updatedDoc, options)
-            console.log(result)
             res.send(result)
         })
 
