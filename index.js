@@ -11,7 +11,6 @@ app.use(express.json())
 
 
 
-console.log(process.env.DB_NAME)
 const uri = `mongodb+srv://${process.env.DB_NAME}:${process.env.DB_PASSWORD}@cluster0.7xhaxuz.mongodb.net/?retryWrites=true&w=majority`;
 
 const client = new MongoClient(uri, {
